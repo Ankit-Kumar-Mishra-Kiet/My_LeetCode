@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> smallerNumbersThanCurrent(vector<int>& nums) {
+    int n = nums.size();
+    
+    // Create a copy of nums for sorting while preserving the original indices.
+    vector<pair<int, int>> numsWithIndices(n);
+    for (int i = 0; i < n; ++i) {
+        numsWithIndices[i] = {nums[i], i};
+    }
+    
+    // Sort numsWithIndices based on element values.
+    sort(numsWithIndices.begin(), numsWithIndices.end());
+    
+    vector<int> result(n);
+    
+    for (int i = 0; i < n; ++i) {
+        // Use lower_bound to find the index of the first element >= nums[i].
+        int index = lower_bound(numsWithIndices.begin(), numsWithIndices.end(), make_pair(nums[i], 0)) - numsWithIndices.begin();
+        result[i] = index;
+    }
+    
+    return result;
+}
+
+int main() {
+    vector<int> nums = {8, 1, 2, 2, 3};
+    vector<int> result = smallerNumbersThanCurrent(nums);
+
+    cout << "Output: ";
+    for (int num : result) {
+        cout << num << " ";
+    }
+    
+    return 0;
+}
